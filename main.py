@@ -13,10 +13,10 @@ texto="presiona el botón para abrir la cámara para escanear tu Pose para detec
 #cuadro de x tamaño (aun por definir) del cuadro que mostrara la cámara y la detección de la pose del cuerpo
  
 # wraplength=350 significa que al llegar a 350 píxeles de ancho, el texto saltará
-etiqueta = tk.Label(ventana, text=titulo, wraplength=350)
+etiqueta = tk.Label(ventana, text=titulo, wraplength=350, bg="goldenrod2", fg="black", font=("Morp Caps Outline", 28))
 etiqueta.pack()
 
-etiqueta = tk.Label(ventana, text=texto, wraplength=350)
+etiqueta = tk.Label(ventana, text=texto, wraplength=350, bg="lightgray", fg="black", font=("Jump Streets", 28))
 etiqueta.pack()#muestra el texto en la ventana
 
 #icono de la ventana
@@ -29,7 +29,7 @@ icono_tkinter = ImageTk.PhotoImage(icono)
 # 3. Aplicar el icono
 ventana.iconphoto(False, icono_tkinter)
 
-button = tk.Button(ventana, text="Cámara", bg="red", fg="white", font=("Arial", 12), command=lambda: print("Botón presionado"))
+button = tk.Button(ventana, text="Cámara", bg="magenta3", fg="goldenrod2", font=("Jump Streets", 18), command=lambda: print("Botón presionado"))
 
 
 button.pack()# muestra el botón en la ventana
