@@ -9,10 +9,24 @@ ventana.geometry("500x500")
 
 titulo = "pintapp"
 texto="presiona el botón para abrir la cámara para escanear tu Pose para detectar la pose del cuerpo con MediaPipe "
+catalogo="fdsfdsfds gggggggggggggggg" \
+
+
 #botón de abrir la cámara para escanear la pose del cuerpo
 #cuadro de x tamaño (aun por definir) del cuadro que mostrara la cámara y la detección de la pose del cuerpo
  
 # wraplength=350 significa que al llegar a 350 píxeles de ancho, el texto saltará
+
+# Pegado a la izquierda ("w" = West / Oeste)
+label_izq = tk.Label(ventana, text="Texto a la izquierda")
+label_izq.pack(anchor="w", padx=10)
+
+
+# Pegado a la derecha ("e" = East / Este)
+label_der = tk.Label(ventana, text=catalogo)
+label_der.pack(anchor="e", padx=10) # padx deja un pequeño margen
+
+#orden del texto
 etiqueta = tk.Label(ventana, text=titulo, wraplength=350, bg="goldenrod2", fg="black", font=("Morp Caps Outline", 28))
 etiqueta.pack()
 
@@ -37,5 +51,16 @@ button.pack()# muestra el botón en la ventana
 etiqueta = tk.Label(ventana, text="aquí se mostrara la cámara y la detección de la pose del cuerpo")
 etiqueta.pack()#muestra el texto en la ventana
 
+#catalogo
+etiqueta = tk.Label(ventana, text=catalogo , wraplength=350, bg="lightgray", fg="black", font=("Jump Streets", 28))
+etiqueta.pack()#muestra el texto en la ventana
+
+# Pegado a la derecha ("e" = East / Este)
+label_der = tk.Label(ventana, text="Texto a la derecha")
+label_der.pack(anchor="e", padx=10) # padx deja un pequeño margen
+
+# Pegado a la izquierda ("w" = West / Oeste)
+label_izq = tk.Label(ventana, text="Texto a la izquierda")
+label_izq.pack(anchor="w", padx=10)
 
 ventana.mainloop()
