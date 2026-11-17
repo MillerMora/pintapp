@@ -1,0 +1,34 @@
+# Dependencias del backend de PintApp (Python 3.14).
+# Generado desde uv.lock. Instalar con:  pip install -r backend/requirements.txt
+# (con uv no hace falta este archivo: usa  uv sync --project backend)
+
+annotated-doc==0.0.6
+annotated-types==0.8.0
+anyio==4.16.0
+click==8.5.1
+fastapi==0.163.1
+greenlet==3.5.6
+h11==0.16.0
+httptools==0.9.0
+idna==3.20
+opentelemetry-api==1.45.2
+pillow==13.0.0
+pydantic==2.14.3
+pydantic-core==2.50.4
+pydantic-settings==2.16.3
+python-dotenv==1.2.4
+pyyaml==6.0.3
+sqlalchemy==2.1.8
+starlette==1.10.0
+typing-extensions==4.16.0
+typing-inspection==0.4.5
+uvicorn==0.54.0
+uvloop==0.23.0 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'
+watchfiles==1.3.0
+websockets==17.4
+# --- Driver de base de datos: descomenta SOLO el de tu motor ---
+# PostgreSQL:
+# psycopg==3.3.9
+# psycopg-binary==3.3.9 ; implementation_name != 'pypy'
+# MariaDB / MySQL:
+# asyncmy==0.2.18

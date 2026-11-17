@@ -1,0 +1,23 @@
+[project]
+name = "pintapp-backend"
+version = "0.1.0"
+description = "Backend (API HTTP) de PintApp: probador virtual de ropa con generación de imágenes por IA."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.163",
+    "uvicorn[standard]>=0.54",
+    "pydantic>=2.14",
+    "pydantic-settings>=2.16",
+    "pillow>=13.0",
+    "sqlalchemy[asyncio]>=2.1",
+]
+
+[project.optional-dependencies]
+# Drivers de base de datos: instala solo el que corresponda a tu motor.
+postgres = ["psycopg[binary]>=3.3"]
+mariadb = ["asyncmy>=0.2.18"]
+
+[tool.uv]
+# El backend no se empaqueta: se ejecuta directamente desde el repositorio.
+package = false
