@@ -1,0 +1,364 @@
+{
+  "garments": [
+    {
+      "id": "camisa-blanca",
+      "name": "Camisa blanca",
+      "category": "Camisas",
+      "color": "Blanco",
+      "color_hex": "#EEEEEE",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CAM-BLA-S",
+          "size": "S",
+          "in_stock": true
+        },
+        {
+          "sku": "CAM-BLA-M",
+          "size": "M",
+          "in_stock": true
+        },
+        {
+          "sku": "CAM-BLA-L",
+          "size": "L",
+          "in_stock": true
+        },
+        {
+          "sku": "CAM-BLA-XL",
+          "size": "XL",
+          "in_stock": false
+        }
+      ]
+    },
+    {
+      "id": "camisa-negra",
+      "name": "Camisa negra",
+      "category": "Camisas",
+      "color": "Negro",
+      "color_hex": "#333333",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CAM-NEG-S",
+          "size": "S",
+          "in_stock": true
+        },
+        {
+          "sku": "CAM-NEG-M",
+          "size": "M",
+          "in_stock": true
+        },
+        {
+          "sku": "CAM-NEG-L",
+          "size": "L",
+          "in_stock": true
+        },
+        {
+          "sku": "CAM-NEG-XL",
+          "size": "XL",
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "camisa-azul",
+      "name": "Camisa azul",
+      "category": "Camisas",
+      "color": "Azul",
+      "color_hex": "#547DA8",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CAM-AZU-S",
+          "size": "S",
+          "in_stock": false
+        },
+        {
+          "sku": "CAM-AZU-M",
+          "size": "M",
+          "in_stock": false
+        },
+        {
+          "sku": "CAM-AZU-L",
+          "size": "L",
+          "in_stock": false
+        },
+        {
+          "sku": "CAM-AZU-XL",
+          "size": "XL",
+          "in_stock": false
+        }
+      ]
+    },
+    {
+      "id": "jean",
+      "name": "Jean",
+      "category": "Pantalones",
+      "color": "Azul",
+      "color_hex": "#416B99",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "PAN-JEA-30",
+          "size": "30",
+          "in_stock": false
+        },
+        {
+          "sku": "PAN-JEA-32",
+          "size": "32",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-JEA-34",
+          "size": "34",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-JEA-36",
+          "size": "36",
+          "in_stock": false
+        }
+      ]
+    },
+    {
+      "id": "pantalon-negro",
+      "name": "Pantalón negro",
+      "category": "Pantalones",
+      "color": "Negro",
+      "color_hex": "#333333",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "PAN-NEG-30",
+          "size": "30",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-NEG-32",
+          "size": "32",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-NEG-34",
+          "size": "34",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-NEG-36",
+          "size": "36",
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "pantalon-beige",
+      "name": "Pantalón beige",
+      "category": "Pantalones",
+      "color": "Beige",
+      "color_hex": "#C9AD83",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "PAN-BEI-30",
+          "size": "30",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-BEI-32",
+          "size": "32",
+          "in_stock": true
+        },
+        {
+          "sku": "PAN-BEI-34",
+          "size": "34",
+          "in_stock": false
+        },
+        {
+          "sku": "PAN-BEI-36",
+          "size": "36",
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "chaqueta-cuero",
+      "name": "Chaqueta de cuero",
+      "category": "Chaquetas",
+      "color": "Café",
+      "color_hex": "#49352C",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CHA-CUE-S",
+          "size": "S",
+          "in_stock": false
+        },
+        {
+          "sku": "CHA-CUE-M",
+          "size": "M",
+          "in_stock": true
+        },
+        {
+          "sku": "CHA-CUE-L",
+          "size": "L",
+          "in_stock": true
+        },
+        {
+          "sku": "CHA-CUE-XL",
+          "size": "XL",
+          "in_stock": false
+        }
+      ]
+    },
+    {
+      "id": "chaqueta-jean",
+      "name": "Chaqueta de jean",
+      "category": "Chaquetas",
+      "color": "Azul",
+      "color_hex": "#547DA8",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CHA-JEA-S",
+          "size": "S",
+          "in_stock": true
+        },
+        {
+          "sku": "CHA-JEA-M",
+          "size": "M",
+          "in_stock": true
+        },
+        {
+          "sku": "CHA-JEA-L",
+          "size": "L",
+          "in_stock": true
+        },
+        {
+          "sku": "CHA-JEA-XL",
+          "size": "XL",
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "tenis",
+      "name": "Tenis",
+      "category": "Zapatos",
+      "color": "Blanco",
+      "color_hex": "#EEEEEE",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "ZAP-TEN-38",
+          "size": "38",
+          "in_stock": true
+        },
+        {
+          "sku": "ZAP-TEN-40",
+          "size": "40",
+          "in_stock": true
+        },
+        {
+          "sku": "ZAP-TEN-42",
+          "size": "42",
+          "in_stock": true
+        },
+        {
+          "sku": "ZAP-TEN-44",
+          "size": "44",
+          "in_stock": false
+        }
+      ]
+    },
+    {
+      "id": "botas",
+      "name": "Botas",
+      "category": "Zapatos",
+      "color": "Café",
+      "color_hex": "#49352C",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "ZAP-BOT-38",
+          "size": "38",
+          "in_stock": false
+        },
+        {
+          "sku": "ZAP-BOT-40",
+          "size": "40",
+          "in_stock": false
+        },
+        {
+          "sku": "ZAP-BOT-42",
+          "size": "42",
+          "in_stock": false
+        },
+        {
+          "sku": "ZAP-BOT-44",
+          "size": "44",
+          "in_stock": false
+        }
+      ]
+    },
+    {
+      "id": "camiseta-blanca",
+      "name": "Camiseta blanca",
+      "category": "Camisetas",
+      "color": "Blanco",
+      "color_hex": "#EEEEEE",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CMS-BLA-S",
+          "size": "S",
+          "in_stock": true
+        },
+        {
+          "sku": "CMS-BLA-M",
+          "size": "M",
+          "in_stock": true
+        },
+        {
+          "sku": "CMS-BLA-L",
+          "size": "L",
+          "in_stock": true
+        },
+        {
+          "sku": "CMS-BLA-XL",
+          "size": "XL",
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "camiseta-negra",
+      "name": "Camiseta negra",
+      "category": "Camisetas",
+      "color": "Negro",
+      "color_hex": "#333333",
+      "image_url": null,
+      "variants": [
+        {
+          "sku": "CMS-NEG-S",
+          "size": "S",
+          "in_stock": true
+        },
+        {
+          "sku": "CMS-NEG-M",
+          "size": "M",
+          "in_stock": false
+        },
+        {
+          "sku": "CMS-NEG-L",
+          "size": "L",
+          "in_stock": true
+        },
+        {
+          "sku": "CMS-NEG-XL",
+          "size": "XL",
+          "in_stock": true
+        }
+      ]
+    }
+  ]
+}
