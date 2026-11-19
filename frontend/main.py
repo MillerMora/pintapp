@@ -366,6 +366,64 @@ tk.Label(
     font=("Arial", 14, "bold")
 ).pack(pady=15)
 
+area_catalogo = tk.Frame(catalogo, bg="white")
+area_catalogo.pack(fill="both", expand=True, padx=5, pady=(0, 5))
+area_catalogo.grid_rowconfigure(0, weight=1)
+area_catalogo.grid_columnconfigure(0, weight=1)
+
+lienzo_catalogo = tk.Canvas(
+    area_catalogo,
+    bg="white",
+    highlightthickness=0
+)
+lienzo_catalogo.grid(row=0, column=0, sticky="nsew")
+
+barra_catalogo = tk.Scrollbar(
+    area_catalogo,
+    orient="vertical",
+    command=lienzo_catalogo.yview
+)
+lienzo_catalogo.configure(yscrollcommand=barra_catalogo.set)
+
+contenido_catalogo = tk.Frame(lienzo_catalogo, bg="white")
+ventana_catalogo = lienzo_catalogo.create_window(
+    (0, 0),
+    window=contenido_catalogo,
+    anchor="nw"
+)
+
+
+def actualizar_region_catalogo(_evento=None):
+    lienzo_catalogo.configure(
+        scrollregion=lienzo_catalogo.bbox("all")
+    )
+    if contenido_catalogo.winfo_reqheight() > lienzo_catalogo.winfo_height():
+        barra_catalogo.grid(row=0, column=1, sticky="ns")
+    else:
+        barra_catalogo.grid_remove()
+
+
+def ajustar_ancho_catalogo(evento):
+    lienzo_catalogo.itemconfigure(ventana_catalogo, width=evento.width)
+    actualizar_region_catalogo()
+
+
+def desplazar_catalogo(evento):
+    widget = ventana.winfo_containing(evento.x_root, evento.y_root)
+    while widget is not None:
+        if widget == catalogo:
+            lienzo_catalogo.yview_scroll(
+                -int(evento.delta / 120),
+                "units"
+            )
+            return "break"
+        widget = widget.master
+
+
+contenido_catalogo.bind("<Configure>", actualizar_region_catalogo)
+lienzo_catalogo.bind("<Configure>", ajustar_ancho_catalogo)
+ventana.bind_all("<MouseWheel>", desplazar_catalogo, add="+")
+
 
 # Prendas y colores de prototipo
 
@@ -412,7 +470,7 @@ def desplegar_categoria(boton, panel):
 
 for categoria, prendas in ropas.items():
 
-    bloque = tk.Frame(catalogo, bg="white")
+    bloque = tk.Frame(contenido_catalogo, bg="white")
     bloque.pack(fill="x", padx=10, pady=5)
 
     # Nombre de categoria
