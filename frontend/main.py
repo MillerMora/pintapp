@@ -3,7 +3,6 @@ from tkinter import messagebox
 from pathlib import Path
 from urllib.error import URLError
 from urllib.request import urlopen
-
 from PIL import Image, ImageTk
 
 try:
@@ -17,6 +16,9 @@ MODELO_POSE_URL = (
     "https://storage.googleapis.com/mediapipe-models/pose_landmarker/"
     "pose_landmarker_full/float16/1/pose_landmarker_full.task"
 )
+BASE_DIR = Path(__file__).resolve().parent
+IMG_DIR = BASE_DIR / "img"
+
 
 ventana = tk.Tk()
 ventana.title("Pintapp")
@@ -290,11 +292,11 @@ def deslizar_abrir(x):
         return
 
     posicion_x = min(x + 30, 0)
-
-    panel_carro.geometry(
-        f"{ancho_carro}x{ventana.winfo_height()}"
-        f"+{ventana.winfo_rootx() + posicion_x}"
-        f"+{ventana.winfo_rooty()}"
+    panel_carro.place_configure(
+        x=posicion_x,
+        y=0,
+        width=ancho_carro,
+        relheight=1
     )
 
     if posicion_x < 0:
@@ -309,16 +311,15 @@ def deslizar_cerrar():
         return
 
     posicion_x = max(posicion_x - 30, -ancho_carro)
-
-    panel_carro.geometry(
-        f"{ancho_carro}x{ventana.winfo_height()}"
-        f"+{ventana.winfo_rootx() + posicion_x}"
-        f"+{ventana.winfo_rooty()}"
+    panel_carro.place_configure(
+        x=posicion_x,
+        y=0,
+        width=ancho_carro,
+        relheight=1
     )
 
     if posicion_x > -ancho_carro:
         ventana.after(10, deslizar_cerrar)
-
     else:
         finalizar_cierre()
 
@@ -332,11 +333,6 @@ def finalizar_cierre():
 
     panel_carro = None
     contenido_carro = None
-
-    try:
-        ventana.attributes("-alpha", 1.0)
-    except tk.TclError:
-        pass
 
 
 def abrir_carro():
@@ -354,23 +350,14 @@ def abrir_carro():
     ancho_carro = int(ventana.winfo_width() * 0.40)
     posicion_x = -ancho_carro
 
-    # Oscurecer aplicacion
-    try:
-        ventana.attributes("-alpha", 0.55)
-    except tk.TclError:
-        pass
-
-    # Ventana superpuesta
-    panel_carro = tk.Toplevel(ventana)
-    panel_carro.overrideredirect(True)
-    panel_carro.configure(bg="white")
-
-    panel_carro.geometry(
-        f"{ancho_carro}x{ventana.winfo_height()}"
-        f"+{ventana.winfo_rootx() - ancho_carro}"
-        f"+{ventana.winfo_rooty()}"
+    # Panel integrado en la ventana principal, sin transparencia global.
+    panel_carro = tk.Frame(ventana, bg="white", bd=1, relief="solid")
+    panel_carro.place(
+        x=posicion_x,
+        y=0,
+        width=ancho_carro,
+        relheight=1
     )
-
     panel_carro.lift()
 
     # Encabezado
@@ -443,7 +430,7 @@ def abrir_carro():
         command=lambda: print("Ropa confirmada:", carrito)
     ).pack(fill="x", padx=10, pady=15)
 
-    # Animacion
+    # Animacion horizontal dentro de la aplicacion
     deslizar_abrir(posicion_x)
 
 
@@ -461,12 +448,25 @@ tk.Button(
     command=abrir_carro
 ).pack(side="left")
 
-tk.Label(
-    encabezado,
-    text="PINTAPP",
-    bg="#eeeeee",
-    font=("Arial", 24, "bold")
-).pack(side="top")
+try:
+    logo = Image.open(IMG_DIR / "Pintapp_TXT.png")
+    logo.thumbnail((360, 100), Image.Resampling.LANCZOS)
+    logo_tk = ImageTk.PhotoImage(logo)
+    etiqueta_logo = tk.Label(
+        encabezado,
+        image=logo_tk,
+        bg="#eeeeee"
+    )
+    etiqueta_logo.image = logo_tk
+    etiqueta_logo.pack(side="top")
+except (FileNotFoundError, OSError) as error:
+    print(f"No se pudo cargar el logo de Pintapp: {error}")
+    tk.Label(
+        encabezado,
+        text="Pintapp",
+        bg="#eeeeee",
+        font=("Arial", 24, "bold")
+    ).pack(side="top")
 
 
 # ==========================================
@@ -733,12 +733,12 @@ for categoria, prendas in ropas.items():
 # ==========================================
 
 try:
-    icono = Image.open("frontend/img/pintapp.png")
+    icono = Image.open(IMG_DIR / "pintapp_oficial.png")
+    icono.thumbnail((64, 64), Image.Resampling.LANCZOS)
     icono_tkinter = ImageTk.PhotoImage(icono)
     ventana.iconphoto(False, icono_tkinter)
-
-except:
-    print("No se encontro el icono de Pintapp")
+except (FileNotFoundError, OSError) as error:
+    print(f"No se encontro el icono de Pintapp: {error}")
 
 
 ventana.mainloop()

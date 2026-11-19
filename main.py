@@ -35,7 +35,7 @@ etiqueta.pack()#muestra el texto en la ventana
 
 #icono de la ventana
 # 1. Cargar la imagen con Pillow
-icono = Image.open("frontend/img/pintapp.png")
+icono = Image.open("frontend/img/pintapp_oficial.png")
 
 # 2. Convertirla usando la variable correcta (imagen_original)
 icono_tkinter = ImageTk.PhotoImage(icono)
