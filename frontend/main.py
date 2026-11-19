@@ -1,10 +1,33 @@
 import tkinter as tk
+from tkinter import messagebox
+from pathlib import Path
+from urllib.error import URLError
+from urllib.request import urlopen
+
 from PIL import Image, ImageTk
+
+try:
+    import cv2
+    import mediapipe as mp
+except ImportError:
+    cv2 = None
+    mp = None
+
+MODELO_POSE_URL = (
+    "https://storage.googleapis.com/mediapipe-models/pose_landmarker/"
+    "pose_landmarker_full/float16/1/pose_landmarker_full.task"
+)
 
 ventana = tk.Tk()
 ventana.title("Pintapp")
 ventana.geometry("1200x700")
 ventana.config(bg="#eeeeee")
+
+captura_camara = None
+detector_pose = None
+camara_activa = False
+imagen_camara = None
+marca_tiempo_camara = 0
 
 carrito = []
 panel_carro = None
@@ -35,6 +58,162 @@ def cambiar_estado(indice, estado):
 def eliminar_ropa(indice):
     carrito.pop(indice)
     refrescar_carro()
+
+
+def obtener_modelo_pose():
+    ruta_modelo = Path.home() / ".pintapp" / "pose_landmarker_full.task"
+    if ruta_modelo.exists():
+        return ruta_modelo
+
+    ruta_modelo.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with urlopen(MODELO_POSE_URL, timeout=30) as respuesta:
+            ruta_modelo.write_bytes(respuesta.read())
+    except (OSError, TimeoutError, URLError) as error:
+        ruta_modelo.unlink(missing_ok=True)
+        raise RuntimeError(
+            "No se pudo descargar el modelo de MediaPipe."
+        ) from error
+
+    return ruta_modelo
+
+
+def iniciar_camara():
+    global captura_camara, detector_pose, camara_activa, marca_tiempo_camara
+
+    if cv2 is None or mp is None:
+        messagebox.showerror(
+            "Dependencias faltantes",
+            "Instala las dependencias del proyecto con:\n"
+            "uv sync"
+        )
+        return
+
+    try:
+        ruta_modelo = obtener_modelo_pose()
+        opciones_pose = mp.tasks.vision.PoseLandmarkerOptions(
+            base_options=mp.tasks.BaseOptions(
+                model_asset_path=str(ruta_modelo)
+            ),
+            running_mode=mp.tasks.vision.RunningMode.VIDEO,
+            num_poses=1,
+            min_pose_detection_confidence=0.5,
+            min_pose_presence_confidence=0.5,
+            min_tracking_confidence=0.5
+        )
+        detector_pose = mp.tasks.vision.PoseLandmarker.create_from_options(
+            opciones_pose
+        )
+    except (OSError, RuntimeError, ValueError) as error:
+        messagebox.showerror("MediaPipe no disponible", str(error))
+        return
+
+    captura_camara = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    if not captura_camara.isOpened():
+        captura_camara.release()
+        captura_camara = None
+        detector_pose.close()
+        detector_pose = None
+        messagebox.showerror(
+            "Cámara no disponible",
+            "No se pudo abrir la cámara. Verifica que esté conectada y "
+            "que ninguna otra aplicación la esté usando."
+        )
+        return
+
+    camara_activa = True
+    marca_tiempo_camara = 0
+    boton_camara.config(text="DETENER CÁMARA")
+    texto_camara.config(text="")
+    actualizar_camara()
+
+
+def detener_camara():
+    global captura_camara, detector_pose, camara_activa, imagen_camara
+
+    camara_activa = False
+    if captura_camara is not None:
+        captura_camara.release()
+        captura_camara = None
+    if detector_pose is not None:
+        detector_pose.close()
+        detector_pose = None
+
+    imagen_camara = None
+    texto_camara.config(
+        image="",
+        text="Presiona CAMARA para iniciar\nla detección de pose"
+    )
+    boton_camara.config(text="CAMARA")
+
+
+def alternar_camara():
+    if camara_activa:
+        detener_camara()
+    else:
+        iniciar_camara()
+
+
+def actualizar_camara():
+    global imagen_camara, marca_tiempo_camara
+
+    if not camara_activa or captura_camara is None:
+        return
+
+    lectura_exitosa, frame = captura_camara.read()
+    if not lectura_exitosa:
+        detener_camara()
+        messagebox.showerror(
+            "Error de cámara",
+            "La cámara dejó de entregar imágenes."
+        )
+        return
+
+    frame = cv2.flip(frame, 1)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    imagen_mp = mp.Image(
+        image_format=mp.ImageFormat.SRGB,
+        data=frame_rgb
+    )
+    marca_tiempo_camara += 33
+    timestamp = marca_tiempo_camara
+    resultado = detector_pose.detect_for_video(imagen_mp, timestamp)
+
+    if resultado.pose_landmarks:
+        alto_frame, ancho_frame = frame_rgb.shape[:2]
+        for landmarks in resultado.pose_landmarks:
+            for conexion in mp.tasks.vision.PoseLandmarksConnections.POSE_LANDMARKS:
+                inicio = landmarks[conexion.start]
+                fin = landmarks[conexion.end]
+                punto_inicio = (
+                    int(inicio.x * ancho_frame),
+                    int(inicio.y * alto_frame)
+                )
+                punto_fin = (
+                    int(fin.x * ancho_frame),
+                    int(fin.y * alto_frame)
+                )
+                cv2.line(
+                    frame_rgb,
+                    punto_inicio,
+                    punto_fin,
+                    (0, 255, 0),
+                    2
+                )
+            for landmark in landmarks:
+                punto = (
+                    int(landmark.x * ancho_frame),
+                    int(landmark.y * alto_frame)
+                )
+                cv2.circle(frame_rgb, punto, 4, (255, 0, 0), -1)
+
+    imagen = Image.fromarray(frame_rgb)
+    ancho = max(camara.winfo_width(), 1)
+    alto = max(camara.winfo_height(), 1)
+    imagen.thumbnail((ancho, alto), Image.Resampling.LANCZOS)
+    imagen_camara = ImageTk.PhotoImage(imagen)
+    texto_camara.config(image=imagen_camara, text="")
+    ventana.after(15, actualizar_camara)
 
 
 def refrescar_carro():
@@ -327,21 +506,31 @@ camara = tk.Frame(
 
 camara.pack(fill="both", expand=True, padx=15, pady=10)
 
-tk.Label(
+texto_camara = tk.Label(
     camara,
-    text="Aqui se mostrara la camara\ny la deteccion de MediaPipe",
+    text="Presiona CAMARA para iniciar\nla detección de pose",
     bg="#d3d3d3",
     font=("Arial", 14)
-).pack(expand=True)
+)
+texto_camara.pack(expand=True)
 
-tk.Button(
+boton_camara = tk.Button(
     centro,
     text="CAMARA",
     bg="magenta3",
     fg="white",
     font=("Arial", 14, "bold"),
-    command=lambda: print("Abrir camara")
-).pack(pady=10)
+    command=alternar_camara
+)
+boton_camara.pack(pady=10)
+
+
+def cerrar_aplicacion():
+    detener_camara()
+    ventana.destroy()
+
+
+ventana.protocol("WM_DELETE_WINDOW", cerrar_aplicacion)
 
 
 # ==========================================
